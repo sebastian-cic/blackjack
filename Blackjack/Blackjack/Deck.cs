@@ -35,7 +35,6 @@ namespace Blackjack
         {
             Card c = _deck.First();
             _deck.Remove(c);
-           // Console.WriteLine(c.ToString());
             return c;
         }
  

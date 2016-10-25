@@ -35,7 +35,7 @@ namespace Blackjack
                     {
                         total = total - 10;
                     }
-
+                    aceCount--;
                 }
                 return total;
             }
