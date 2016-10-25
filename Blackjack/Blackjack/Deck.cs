@@ -6,7 +6,7 @@ namespace Blackjack
 {
     class Deck
     {
-        private List<Card> _deck = new List<Card>(52);
+        public List<Card> _deck = new List<Card>(52);
         private List<string> _suits = new List<string> { "h", "c", "s", "d" };
 
         public Deck()
@@ -35,7 +35,7 @@ namespace Blackjack
         {
             Card c = _deck.First();
             _deck.Remove(c);
-            Console.WriteLine(c.ToString());
+           // Console.WriteLine(c.ToString());
             return c;
         }
  

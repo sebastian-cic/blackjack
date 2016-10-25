@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Blackjack
 {
-    class Player
+    class Dealer
     {
-        private List<Card> _playersCards = new List<Card>();
-
+        private List<Card> _dealerCards = new List<Card>();
         public bool IsBusted
         {
             get { return TotalCardValue > 21; }
-          
-        }
 
+        }
 
         public int TotalCardValue
         {
@@ -20,7 +21,7 @@ namespace Blackjack
             {
                 var aceCount = 0;
                 var total = 0;
-                foreach (Card c in this._playersCards)
+                foreach (Card c in this._dealerCards)
                 {
                     if (c.IsAce)
                     {
@@ -28,41 +29,39 @@ namespace Blackjack
                     }
                     total = total + c.Value;
                 }
-
                 while(aceCount > 0)
                 {
                     if(total > 21)
                     {
-                        total = total - 10;             
+                        total = total - 10;
                     }
-                    aceCount--;
+
                 }
                 return total;
             }
-         }
+        }
 
-        public Player()
+        public Dealer()
         {
 
         }
 
-        public void AddPlayerCard(Card card)
+
+        public void AddDealerCard(Card card)
         {
-            this._playersCards.Add(card);
+            this._dealerCards.Add(card);
         }
-        
         public void DisplayCards()
+
         {
-            foreach(Card c in this._playersCards)
+            foreach (Card c in this._dealerCards)
             {
                 Console.WriteLine(c.ToString());
-             
             }
         }
         public List<Card> GetAllCards()
         {
-            return _playersCards;
+            return _dealerCards;
         }
-   
     }
 }
