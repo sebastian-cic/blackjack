@@ -11,7 +11,7 @@ namespace Blackjack
         private static Player p;
         private static Player p2;
         private static Deck c;
-        private static bool split = false;
+        private static bool split ;
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -23,14 +23,14 @@ namespace Blackjack
 
             while (userinput == "y")
             {
-
+                split = false;
                 c = new Deck();
                 p = new Player();
                 d = new Dealer();
                 p2 = new Player();
 
-                p.AddPlayerCard(c.sameCard());
-                p.AddPlayerCard(c.sameCard());
+                p.AddPlayerCard(c.GetCard());
+                p.AddPlayerCard(c.GetCard());
                 d.AddDealerCard(c.GetCard());
 
                 if (p.IsSplitable)
@@ -67,8 +67,22 @@ namespace Blackjack
                     DealerHits();
                 }
 
-                CheckWinner(p);
-
+                if (!split)
+                {
+                    
+                    Console.Clear();
+                    PrintToScreen();
+                    Console.WriteLine(CheckWinner(p));
+                    Console.WriteLine("not split");
+                }else
+                {
+                    Console.Clear();
+                    PrintToScreenSplit();
+                    Console.WriteLine("Your first hand :"+CheckWinner(p));
+                    Console.WriteLine("Your second hand:"+CheckWinner(p2));
+                    
+                }
+             
                 Console.WriteLine("Enter 'y' to play again" );
                 userinput = Console.ReadLine();
                 Console.Clear();
@@ -159,33 +173,35 @@ namespace Blackjack
             dis.Drawcards(p2.GetAllCards());
         }
 
-        public static void CheckWinner(Player p)
+        public static string CheckWinner(Player p)
         {
+            string result = "";
             if (p.IsBusted)
             {
-                PrintToScreen();
-                Console.WriteLine("BUST");
+               
+                result = "BUST";
             }
             if (d.IsBusted)
             {
-                PrintToScreen();
-                Console.WriteLine("Dealer busts, YOU WIN");
+              
+                result = "Dealer busts, YOU WIN";
             }
             if (p.TotalCardValue > d.TotalCardValue && !p.IsBusted && !d.IsBusted)
             {
-                PrintToScreen();
-                Console.WriteLine("YOU WIN");
+                
+                result = "YOU WIN";
             }
             if (p.TotalCardValue < d.TotalCardValue && !p.IsBusted && !d.IsBusted)
             {
-                PrintToScreen();
-                Console.WriteLine("you lose");
+               
+                result = "you lose";
             }
             if (p.TotalCardValue == d.TotalCardValue && !p.IsBusted && !d.IsBusted)
             {
-                PrintToScreen();
-                Console.WriteLine("PUSH");
+                
+                result = "PUSH";
             }
+            return result;
         }
     }
 }
