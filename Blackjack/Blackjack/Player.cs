@@ -12,7 +12,18 @@ namespace Blackjack
             get { return TotalCardValue > 21; }
           
         }
-
+        public bool IsSplitable
+        {
+            get
+            {if (_playersCards.Count == 2)
+                {
+                    { return _playersCards[0].CardFaceValue == _playersCards[1].CardFaceValue; }
+                }
+                else
+                    return false;
+            }
+           
+        }
 
         public int TotalCardValue
         {
@@ -62,6 +73,13 @@ namespace Blackjack
         public List<Card> GetAllCards()
         {
             return _playersCards;
+        }
+
+        public Card ReturnSplitCard()
+        {
+            Card cardToReturn = _playersCards[0];
+            _playersCards.RemoveAt(0);
+            return cardToReturn;
         }
    
     }

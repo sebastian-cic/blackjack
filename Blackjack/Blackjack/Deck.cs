@@ -37,7 +37,11 @@ namespace Blackjack
             _deck.Remove(c);
             return c;
         }
- 
+        public Card sameCard()
+        {
+            Card c = new Card("h", 5);
+            return c;
+        }
     }
 
 }

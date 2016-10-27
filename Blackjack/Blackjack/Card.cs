@@ -7,7 +7,8 @@ namespace Blackjack
     {
         public string Suit { get; private set; }
         public bool IsAce = false;
-        public int Value {
+        public int Value
+        {
             get
             {
                 if (_cardFaceValue > 10)
@@ -18,7 +19,6 @@ namespace Blackjack
                     return _cardFaceValue;
             }
         }
-
         private int _cardFaceValue;
         public int CardFaceValue
         {
@@ -40,9 +40,5 @@ namespace Blackjack
         {
             return _cardFaceValue + Suit;
         }
-
-       
-       
     }
-   
 }
