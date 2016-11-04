@@ -8,6 +8,10 @@ namespace Blackjack
 {
     class DisplayCards
     {
+        /// <summary>
+        /// Method to draw cards on screen. Each card is drawn one line at a time by calling PrintLine() placing cards side by side.
+        /// </summary>
+        /// <param name="c">List of cards to be drawn</param>
         public void Drawcards(List<Card> c)
         {
           var count = 0;
@@ -15,7 +19,7 @@ namespace Blackjack
             {
                 PrintLine(count, GetFace(card), GetSuit(card));
             }
-
+        
             Console.WriteLine();
             count++;
 
@@ -66,19 +70,24 @@ namespace Blackjack
             Console.WriteLine();
             count++;
         }
-
-        public void PrintLine(int i, string dis,string suit)
+        /// <summary>
+        /// Draws one line of card by switching line number to be printed.
+        /// </summary>
+        /// <param name="lineNumber">Number between 0 and 6 for specific line to be printed</param>
+        /// <param name="faceValue">Face value of the card</param>
+        /// <param name="suit">Suit of the card</param>
+        public void PrintLine(int lineNumber, string faceValue, string suit)
         {
+            //UTF8 code to draw bottom line of card
             string line = "\u0305";
-            string display = dis;
-            string x = suit;
+            string display = faceValue;
 
-            switch (i)
+            switch (lineNumber)
             {
                 case 0: Console.Write("________");
                     break;
                 case 1:
-                    Console.Write("|" + x + "    " + x + "|");
+                    Console.Write("|" + suit + "    " + suit + "|");
                     break;
                 case 2:
                     Console.Write("|      |");
@@ -90,12 +99,18 @@ namespace Blackjack
                     Console.Write("|      |");
                     break;
                 case 5:
-                    Console.Write("|" + x + "    " + x + "|");
+                    Console.Write("|" + suit + "    " + suit + "|");
                     break;
                 case 6: Console.Write(line + line + line + line + line + line + line + line);
                     break;
             }
         }
+
+        /// <summary>
+        /// Get face value of cards from numerical value.
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns>String representing the face card value</returns>
         public string GetFace(Card card)
         {
             string display = "";
@@ -116,16 +131,22 @@ namespace Blackjack
             {
                 display = " K";
             }
-            else if (card.CardFaceValue != 10)
+            else if (card.CardFaceValue == 10)
             {
-                display = " " + card.CardFaceValue;
+                display = "10";   
             }
             else
             {
-                display = "10";
+                display = " " + card.CardFaceValue;
             }
             return display;
         }
+
+        /// <summary>
+        /// Get UTF8 value of card suit.
+        /// </summary>
+        /// <param name="card"></param>
+        /// <returns>String value for UTF8 code for card suit</returns>
         public string GetSuit(Card card)
         {
             string cardSuit = "";
@@ -149,6 +170,36 @@ namespace Blackjack
             }
             return cardSuit;
         }
-    }
 
+        /// <summary>
+        /// Print cards to screen when player did not split.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="dealer"></param>
+        public  void PrintToScreen(Player player , Dealer dealer)
+        {
+            Console.Clear();
+            Console.WriteLine("DEALERS CARDS");
+            Drawcards(dealer.GetAllCards());
+            Console.WriteLine("YOUR CARDS");
+            Drawcards(player.GetAllCards());
+        }
+
+        /// <summary>
+        /// Print cards to screen if player split.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="player2"></param>
+        /// <param name="dealer"></param>
+        public void PrintToScreenSplit(Player player, Player player2, Dealer dealer)
+        {
+            Console.Clear();
+            Console.WriteLine("DEALERS CARDS");
+            Drawcards(dealer.GetAllCards());
+            Console.WriteLine("YOUR CARDS");
+            Drawcards(player.GetAllCards());
+            Console.WriteLine("YOUR CARDS");
+            Drawcards(player2.GetAllCards());
+        }
+    }
 }

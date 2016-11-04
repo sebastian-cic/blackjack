@@ -1,207 +1,94 @@
 ﻿using System;
-using System.Threading;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Blackjack
 {
     class Program
     {
-        private static DisplayCards dis;
-        private static Dealer d;
-        private static Player p;
-        private static Player p2;
-        private static Deck c;
-        private static bool split ;
         static void Main(string[] args)
         {
+            //Enable display of suit characters in console.
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-
-            
-            string userinput = "y";
-            string userSplitInput = "";
-            dis = new DisplayCards();
-
+            string userinput = "y";     
+        
             while (userinput == "y")
             {
-                split = false;
-                c = new Deck();
-                p = new Player();
-                d = new Dealer();
-                p2 = new Player();
+                DisplayCards dis = new DisplayCards();
+                string userSplitInput = "";
+                bool split = false;
+                Deck deck = new Deck();
+                Player player = new Player();
+                Dealer dealer = new Dealer();
+                Player splitPlayer = new Player();
 
-                p.AddPlayerCard(c.GetCard());
-                p.AddPlayerCard(c.GetCard());
-                d.AddDealerCard(c.GetCard());
+                //Deal starting cards
+                player.Hit(deck.sameCard());
+                player.Hit(deck.sameCard());
+                dealer.Hit(deck.GetCard());
 
-                if (p.IsSplitable)
+                //Runs if player has two of the same card
+                if (player.IsSplitable)
                 {
-                    PrintToScreen();
+                    dis.PrintToScreen(player, dealer);
 
                     Console.WriteLine("Split?");
-                    userSplitInput = Console.ReadLine();
+                    userSplitInput = Console.ReadLine().ToLower();
 
                     if (userSplitInput == "y")
                     {
-                        p2.AddPlayerCard(p.ReturnSplitCard());
+                        splitPlayer.Hit(player.ReturnSplitCard());
                         split = true;
                     }
                 }
-                if (!split) {
-                HandleUserInput(p);
-                Console.Clear();
-                }
-                if (split)
-                {
-                    Console.Clear();
-                    HandleUserInput(p);
-                    Console.Clear();
-                    HandleUserInput(p2);
-                }
 
-                if (!p.IsBusted && !split)
-                {
-                    DealerHits();
-                }
-                if (split && !p2.IsBusted || !p.IsBusted )
-                {
-                    DealerHits();
-                }
-
+                //Run code for single or split hand
                 if (!split)
                 {
-                    
+                    player.HandleUserInput(splitPlayer, dealer, deck, dis, split);
                     Console.Clear();
-                    PrintToScreen();
-                    Console.WriteLine(CheckWinner(p));
-                    Console.WriteLine("not split");
-                }else
+                }
+                else if (split)
                 {
                     Console.Clear();
-                    PrintToScreenSplit();
-                    Console.WriteLine("Your first hand :"+CheckWinner(p));
-                    Console.WriteLine("Your second hand:"+CheckWinner(p2));
-                    
+                    player.HandleUserInput(splitPlayer, dealer, deck, dis, split);
+                    Console.Clear();
                 }
-             
-                Console.WriteLine("Enter 'y' to play again" );
-                userinput = Console.ReadLine();
-                Console.Clear();
-            }
-        }
 
-
-        public static void  HandleUserInput(Player p)
-        {
-            string hit = "";
-            if (split)
-            {
-                PrintToScreenSplit();
-            }else { 
-            PrintToScreen();
-            }
-            while (hit != "s" && !p.IsBusted)
-            { 
-                Console.WriteLine("hit or stay?");
-                hit = Console.ReadLine();
-
-                if (hit == "h")
+                //Player split and one or both hands did not bust
+                if (!player.IsBusted && !split)
                 {
-                    Hit(p);
-                    if (!split)
-                    {
-                        PrintToScreen();
-                    }
-                    else
-                    {
-                        PrintToScreenSplit();
-                    }
-
+                    dealer.DealerHits(player, splitPlayer, dis, split, deck);
                 }
-            }
-        }
+                else if (split && !splitPlayer.IsBusted || !player.IsBusted )
+                {
+                    dealer.DealerHits(player, splitPlayer, dis, split, deck);
+                }
 
-
-
-        public static void DealerHits()
-        {
-            Console.Clear();
-            while (d.TotalCardValue < 17)
-            {
-                d.AddDealerCard(c.GetCard());
+                //Single hand not split
                 if (!split)
                 {
-                    PrintToScreen();
-                }else
-                {
-                    PrintToScreenSplit();
+                    Console.Clear();
+                    dis.PrintToScreen(player, dealer);
+                    Console.WriteLine(player.CheckIfWinner(player, dealer));  
                 }
-                int times = 100;
-                while (times > 0)
+                else
                 {
-                    Thread.Sleep(5);
-                    times--;
+                    Console.Clear();
+                    dis.PrintToScreenSplit(player,splitPlayer,dealer);
+                    Console.WriteLine("Your first hand :"+ player.CheckIfWinner(player,dealer));
+                    Console.WriteLine("Your second hand:"+ player.CheckIfWinner(splitPlayer,dealer));
                 }
 
-                Console.Clear();
-
-            }
-        }
-
-
-        public static void Hit(Player p)
-        {
-            p.AddPlayerCard(c.GetCard());
-        }
-
-        public static void PrintToScreen()
-        {
-            Console.Clear();
-            Console.WriteLine("DEALERS CARDS");
-            dis.Drawcards(d.GetAllCards());
-            Console.WriteLine("YOUR CARDS");
-            dis.Drawcards(p.GetAllCards());
-        }
-
-        public static void PrintToScreenSplit()
-        {
-            Console.Clear();
-            Console.WriteLine("DEALERS CARDS");
-            dis.Drawcards(d.GetAllCards());
-            Console.WriteLine("YOUR CARDS");
-            dis.Drawcards(p.GetAllCards());
-            Console.WriteLine("YOUR CARDS");
-            dis.Drawcards(p2.GetAllCards());
-        }
-
-        public static string CheckWinner(Player p)
-        {
-            string result = "";
-            if (p.IsBusted)
-            {
-               
-                result = "BUST";
-            }
-            if (d.IsBusted)
-            {
+                //Ask user to keep playing
+                Console.WriteLine("Enter 'Y' to play again or 'N' to exit");
+                userinput = Console.ReadLine().ToLower();
+                while (userinput != "y" && userinput != "n")
+                {
+                    Console.WriteLine("Enter 'Y' to play again or 'N' to exit");
+                    userinput = Console.ReadLine().ToLower();
+                }
               
-                result = "Dealer busts, YOU WIN";
+                Console.Clear();
             }
-            if (p.TotalCardValue > d.TotalCardValue && !p.IsBusted && !d.IsBusted)
-            {
-                
-                result = "YOU WIN";
-            }
-            if (p.TotalCardValue < d.TotalCardValue && !p.IsBusted && !d.IsBusted)
-            {
-               
-                result = "you lose";
-            }
-            if (p.TotalCardValue == d.TotalCardValue && !p.IsBusted && !d.IsBusted)
-            {
-                
-                result = "PUSH";
-            }
-            return result;
         }
     }
 }

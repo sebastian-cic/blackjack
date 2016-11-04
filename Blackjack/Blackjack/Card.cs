@@ -7,6 +7,7 @@ namespace Blackjack
     {
         public string Suit { get; private set; }
         public bool IsAce = false;
+        //Gets value of card, changes face cards to 10 and Ace to 11
         public int Value
         {
             get
@@ -19,15 +20,17 @@ namespace Blackjack
                     return _cardFaceValue;
             }
         }
+
         private int _cardFaceValue;
+
         public int CardFaceValue
         {
             get { return this._cardFaceValue; }
         }
 
+        //Constructor
         public Card(string suit , int faceValue)
-        {
-         
+        {       
             this.Suit = suit;
             this._cardFaceValue = faceValue;
             if (_cardFaceValue == 1)
