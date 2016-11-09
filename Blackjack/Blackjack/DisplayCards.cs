@@ -17,7 +17,7 @@ namespace Blackjack
           var count = 0;
           foreach(Card card in c)
             {
-                PrintLine(count, GetFace(card), GetSuit(card));
+                PrintLine(count, card.GetFace(), card.GetSuit());
             }
         
             Console.WriteLine();
@@ -25,7 +25,7 @@ namespace Blackjack
 
             foreach (Card card in c)
             {
-                PrintLine(count, GetFace(card), GetSuit(card));
+                PrintLine(count, card.GetFace(), card.GetSuit());
             }
 
             Console.WriteLine();
@@ -33,22 +33,14 @@ namespace Blackjack
 
             foreach (Card card in c)
             {
-                PrintLine(count, GetFace(card), GetSuit(card));
+                PrintLine(count, card.GetFace(), card.GetSuit());
             }
 
             Console.WriteLine();
             count++;
             foreach (Card card in c)
             {
-                PrintLine(count, GetFace(card), GetSuit(card));
-            }
-
-            Console.WriteLine();
-            count++;
-
-            foreach (Card card in c)
-            {
-                PrintLine(count, GetFace(card), GetSuit(card));
+                PrintLine(count, card.GetFace(), card.GetSuit());
             }
 
             Console.WriteLine();
@@ -56,7 +48,7 @@ namespace Blackjack
 
             foreach (Card card in c)
             {
-                PrintLine(count, GetFace(card), GetSuit(card));
+                PrintLine(count, card.GetFace(), card.GetSuit());
             }
 
             Console.WriteLine();
@@ -64,7 +56,15 @@ namespace Blackjack
 
             foreach (Card card in c)
             {
-                PrintLine(count, GetFace(card), GetSuit(card));
+                PrintLine(count, card.GetFace(), card.GetSuit());
+            }
+
+            Console.WriteLine();
+            count++;
+
+            foreach (Card card in c)
+            {
+                PrintLine(count, card.GetFace(), card.GetSuit());
             }
 
             Console.WriteLine();
@@ -104,71 +104,6 @@ namespace Blackjack
                 case 6: Console.Write(line + line + line + line + line + line + line + line);
                     break;
             }
-        }
-
-        /// <summary>
-        /// Get face value of cards from numerical value.
-        /// </summary>
-        /// <param name="card"></param>
-        /// <returns>String representing the face card value</returns>
-        public string GetFace(Card card)
-        {
-            string display = "";
-
-            if (card.CardFaceValue == 1)
-            {
-                display = " A";
-            }
-            else if (card.CardFaceValue == 11)
-            {
-                display = " J";
-            }
-            else if (card.CardFaceValue == 12)
-            {
-                display = " Q";
-            }
-            else if (card.CardFaceValue == 13)
-            {
-                display = " K";
-            }
-            else if (card.CardFaceValue == 10)
-            {
-                display = "10";   
-            }
-            else
-            {
-                display = " " + card.CardFaceValue;
-            }
-            return display;
-        }
-
-        /// <summary>
-        /// Get UTF8 value of card suit.
-        /// </summary>
-        /// <param name="card"></param>
-        /// <returns>String value for UTF8 code for card suit</returns>
-        public string GetSuit(Card card)
-        {
-            string cardSuit = "";
-            switch (card.Suit)
-            {
-                case "s":
-                    cardSuit = "\u2660";
-                    break;
-
-                case "h":
-                    cardSuit = "\u2665";
-                    break;
-
-                case "d":
-                    cardSuit = "\u2666";
-                    break;
-
-                case "c":
-                    cardSuit = "\u2663";
-                    break;
-            }
-            return cardSuit;
         }
 
         /// <summary>

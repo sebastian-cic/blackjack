@@ -21,8 +21,8 @@ namespace Blackjack
                 Player splitPlayer = new Player();
 
                 //Deal starting cards
-                player.Hit(deck.sameCard());
-                player.Hit(deck.sameCard());
+                player.Hit(deck.GetCard());
+                player.Hit(deck.GetCard());
                 dealer.Hit(deck.GetCard());
 
                 //Runs if player has two of the same card
