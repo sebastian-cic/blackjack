@@ -82,16 +82,6 @@ namespace Blackjack
         }
 
         /// <summary>
-        /// Add card to player hand from deck.
-        /// </summary>
-        /// <param name="player"></param>
-        /// <param name="deck"></param>
-      /*  public void Hit(Player player, Deck deck)
-        {
-            player.Hit(deck.GetCard());
-        }
-        */
-        /// <summary>
         /// Handles user input and displays results to screen for single or split hands.
         /// </summary>
         /// <param name="player2"></param>
@@ -104,12 +94,16 @@ namespace Blackjack
             string hit = "";
             if (split)
             {
+                //Display cards for split hand
                 displayCards.PrintToScreenSplit(this, player2, dealer);
             }
             else
             {
+                //Display cards for standard hand
                 displayCards.PrintToScreen(this, dealer);
             }
+            //If player does not stay and does not bust.
+            //Ask user to hit or stay for main hand.
             while (hit != "s" && !this.IsBusted)
             {
                 Console.WriteLine("(H)it or (S)tay?");
@@ -118,6 +112,7 @@ namespace Blackjack
                 if (hit == "h")
                 {
                     Hit(deck.GetCard());
+                    //Display one or two hands depending on if player split.
                     if (!split)
                     {
                         displayCards.PrintToScreen(this, dealer);
@@ -128,13 +123,15 @@ namespace Blackjack
                     }
                 }
             }
+            //Change hit variable from 's'tay to 'n' if player split.
             if (split)
             {
                 hit = "n";
             }
+            //Get user input for hit or stay for second hand of split cards
             while (hit != "s" && !player2.IsBusted && split)
             {
-                Console.WriteLine("(H)it or (S)tay?");
+                Console.WriteLine("Second hand (H)it or (S)tay?" );
                 hit = Console.ReadLine().ToLower();
 
                 if (hit == "h")
@@ -165,7 +162,7 @@ namespace Blackjack
             }
             if (player.TotalCardValue < dealer.TotalHandValue && !player.IsBusted && !dealer.IsBusted)
             {
-                result = "you lose";
+                result = "YOU LOSE";
             }
             if (player.TotalCardValue == dealer.TotalHandValue && !player.IsBusted && !dealer.IsBusted)
             {

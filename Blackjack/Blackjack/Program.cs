@@ -30,7 +30,7 @@ namespace Blackjack
                 {
                     dis.PrintToScreen(player, dealer);
 
-                    Console.WriteLine("Split?");
+                    Console.WriteLine("Split? (Y)es or(N)o");
                     userSplitInput = Console.ReadLine().ToLower();
 
                     if (userSplitInput == "y")
